@@ -1,0 +1,24 @@
+.totalBalance {
+  border: 1px solid var(--grey-2);
+  border-radius: 8px;
+
+  width: 90%;
+  text-align: start;
+
+  padding: 40px 25px;
+}
+
+.totalBalance > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.totalBalance > div > h3:nth-child(2) {
+  color: var(--color-primary);
+}
+
+.totalBalance > p {
+  font-size: var(--body);
+  color: var(--grey-3);
+}

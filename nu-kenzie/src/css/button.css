@@ -1,0 +1,26 @@
+button {
+  padding: 10px 15px;
+  border-radius: 8px;
+
+  font-family: "Nunito", sans-serif;
+  border: none;
+
+  cursor: pointer;
+}
+
+button {
+  padding: 10px 15px;
+  border-radius: 8px;
+
+  font-family: "Nunito", sans-serif;
+  border: none;
+}
+
+.active {
+  background-color: var(--color-primary);
+  color: var(--white);
+}
+
+.enter {
+  width: 100%;
+}

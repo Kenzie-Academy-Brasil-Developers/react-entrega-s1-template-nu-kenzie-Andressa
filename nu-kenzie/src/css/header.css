@@ -1,0 +1,18 @@
+.header {
+  height: 88px;
+  width: 100%;
+  background-color: var(--grey-1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 32px -12px #00000040;
+}
+
+.header > div {
+  width: 90%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+}
+
+
