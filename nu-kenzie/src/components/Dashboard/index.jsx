@@ -23,6 +23,14 @@ export const Dashboard = ({ children }) => {
 
   const addFinance = (event) => {
     event.preventDefault();
+    if (type === "Despesa") {
+      setMoney(-Math.abs(money));
+      console.log(money);
+    }
+    if (type === "Entrada") {
+      setMoney(Math.abs(money));
+    }
+
     setCard([...card, { description, type, money }]);
     setListing([...card, { description, type, money }]);
     totalBalance();
@@ -31,9 +39,6 @@ export const Dashboard = ({ children }) => {
   const deleteCard = (element) => {
     const filterCard = card.filter((item) => item !== element);
     setCard(filterCard);
-
-    const filterList = listing.filter((item) => item !== element);
-    setCard(filterList);
   };
 
   const filterCard = (event) => {
@@ -44,17 +49,10 @@ export const Dashboard = ({ children }) => {
   const everyCard = () => {
     setListing(card);
   };
-  const totalBalance = () => {
-    card.map((element) => {
-      return setTotal(
-        element.type === "Despesa"
-          ? total - element.money - total
-          : element.money + total
-      );
-    });
-    console.log(total);
 
-    return card.length === 0 ? 0 : total;
+  const totalBalance = () => {
+    const totalPrice = card.reduce((acc, act) => acc + act.money, 0);
+    return setTotal(totalPrice);
   };
 
   return (
@@ -67,7 +65,7 @@ export const Dashboard = ({ children }) => {
       </header>
       <main className="main">
         <div className="fisrtDiv">
-          <form onSubmit={addFinance} className="form">
+          <form className="form">
             <div>
               <label htmlFor="description">Descrição</label>
               <input
@@ -99,7 +97,7 @@ export const Dashboard = ({ children }) => {
                 </select>
               </div>
             </div>
-            <button type="submit" className="active enter">
+            <button type="submit" className="active enter" onClick={addFinance}>
               Inserir valor
             </button>
           </form>
@@ -107,7 +105,12 @@ export const Dashboard = ({ children }) => {
           <section className="totalBalance">
             <div>
               <h3>Valor total:</h3>
-              <h3>{total}</h3>
+              <h3>
+                {total.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </h3>
             </div>
             <p>O valor se refere ao saldo</p>
           </section>
