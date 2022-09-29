@@ -17,28 +17,21 @@ export const Dashboard = ({ children }) => {
 
   const [description, setDescription] = useState("");
   const [type, setType] = useState("Entrada");
-  const [money, setMoney] = useState();
+  const [money, setMoney] = useState(0);
+  const [id, setId] = useState(0);
 
-  const [total, setTotal] = useState(0);
-
-  const addFinance = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    if (type === "Despesa") {
-      setMoney(-Math.abs(money));
-      console.log(money);
-    }
-    if (type === "Entrada") {
-      setMoney(Math.abs(money));
-    }
-
-    setCard([...card, { description, type, money }]);
-    setListing([...card, { description, type, money }]);
-    totalBalance();
+    setCard([...card, { description, type, money, id }]);
+    setListing([...card, { description, type, money, id }]);
   };
 
-  const deleteCard = (element) => {
-    const filterCard = card.filter((item) => item !== element);
+  const deleteCard = (id) => {
+    const filterCard = card.filter((element) => element.id !== id);
     setCard(filterCard);
+
+    const LististingDelete = listing.filter((element) => element.id !== id);
+    setListing(LististingDelete);
   };
 
   const filterCard = (event) => {
@@ -50,10 +43,13 @@ export const Dashboard = ({ children }) => {
     setListing(card);
   };
 
-  const totalBalance = () => {
-    const totalPrice = card.reduce((acc, act) => acc + act.money, 0);
-    return setTotal(totalPrice);
-  };
+  const totalPrice = card.reduce((acc, act) => {
+    if (act.type === "Entrada") {
+      return acc + act.money;
+    } else {
+      return acc - act.money;
+    }
+  }, 0);
 
   return (
     <div className="container">
@@ -65,7 +61,7 @@ export const Dashboard = ({ children }) => {
       </header>
       <main className="main">
         <div className="fisrtDiv">
-          <form className="form">
+          <form className="form" onSubmit={(event) => handleSubmit(event)}>
             <div>
               <label htmlFor="description">Descrição</label>
               <input
@@ -97,7 +93,11 @@ export const Dashboard = ({ children }) => {
                 </select>
               </div>
             </div>
-            <button type="submit" className="active enter" onClick={addFinance}>
+            <button
+              type="submit"
+              className="active enter"
+              onClick={() => setId(Math.floor(Math.random() * 10000))}
+            >
               Inserir valor
             </button>
           </form>
@@ -106,7 +106,7 @@ export const Dashboard = ({ children }) => {
             <div>
               <h3>Valor total:</h3>
               <h3>
-                {total.toLocaleString("pt-br", {
+                {totalPrice.toLocaleString("pt-br", {
                   style: "currency",
                   currency: "BRL",
                 })}
@@ -151,7 +151,7 @@ export const Dashboard = ({ children }) => {
                     type={type}
                     value={money}
                   >
-                    <button onClick={() => deleteCard(element)}>
+                    <button onClick={() => deleteCard(element.id)}>
                       <BiTrash />
                     </button>
                   </Card>
